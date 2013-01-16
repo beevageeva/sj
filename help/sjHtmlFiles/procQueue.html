@@ -1,0 +1,17 @@
+<html><body>
+<h1>Process scheduling</h1>
+When adding a process , a number of time units must be specified.
+The processes can be in 2 queues : the waiting queue and the executing queue.
+When a process starts execution in the exec queue 
+it will stay in this state as long as his TUnits(from config when adding a process)>=0 
+and it hasn't a memory page fault
+For each accesscache/memory access a number of access time units is also defined.
+When executing this time units will be decremented from the TUnits of the process
+currently executing and from the TUnits of the first process from the waiting queue.
+When the TUnits of the currently executing process becomes < 0 the currently exec process becomes the last
+element of the executing queue , so the next process in the queue will exec.
+When a mem page fault occurs , the currently exec will become the last element in the waiting queue
+having to stay there for TUnits = diskAccessTimeUnits.
+When TUnits for the first process in the waiting queue < 0 this 
+will become the last element of the exec queue.
+</body></html>

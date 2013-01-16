@@ -1,0 +1,51 @@
+<html><body>
+<h1>Validation</h1>
+There are 2 types of validation: the validation that is made in the page(when pressing next , prev or ok) for the fields 
+that are only in that page and the final validation(made at final when pressing ok) for the fields that are not all in 
+the same configuration page.<br><br>
+<B>Validations made : </B>
+<ul>
+	<li>for the caches(including main memory)(third panel of configuration)
+		<ul>
+			<li>if the cache is enabled the number of entries must be between 2 and 2**32</li>
+			<li>the block size must be between 2 and 2**20</li>
+			<li>the number of sets must be between 1 and number of entries </li>
+			<li>the bus size must be between 8 and 128 </li>
+			<li>the cache access time units must be between 0 and 50000 </li>
+			<li>the block size of the caches must be less or equal to the page size of the main memory<br>
+			(In this case it is assumed that the caches have the same block size.)</li>
+		</ul>
+	</li>
+	<li>for the memory configuration(first panel of configuration)
+		<ul>
+			<li>the maximum number of processes that can be loaded must be between 1 and 2**8</li>
+			<li>Total number number of virtual pages must be greater or equal to the number<br>
+			of real pages(the number of entries in the main memory)</li>
+			<li>Virtual address size must be less or equal to 32</li>
+		</ul>
+	</li>
+	<li>for the page table(second panel of configuration)
+	<br>if is direct mapped
+	<ul>
+	<li>the number of levels must be between 1 and the number of virtual pages for each process</li>
+	<li>the sum of offset lengths must be equal to the number of virt pages for each process</li>
+	</ul>
+	if is inverse mapped
+	<ul><li>the hash anchor size must be greater or equal than the number of entries in the main memory and<br>
+	less or equal than the total number of virtual pages</li></ul>
+	</li>
+</ul>
+</body></html>	
+	
+		
+			
+			
+			
+			
+			
+			
+	
+	
+
+	
+		

@@ -1,0 +1,60 @@
+<html><body>
+<h1>Table columns</h1>
+
+Cache table(this includes tlb and main memory)default fields:
+<ul>
+	<li>i : the entry number</li>
+	<li>KEY : the cache address . In the case of main memory this is the page number</li>
+	<li>m : 1 if the block was modif , 0 if not , - if it is an instr entry</li>
+	<li>pid : the number of process that referenced this page</li>	
+	
+	<p>The following fields will appear due to a specific type of cache:
+	<li>TAG , SET :  tag . The address decomp in TAG|SET|OFFSET . Fully associative caches have only one set (SET number of bits is 0 )
+	and direct mapped caches have for each entry in the cache a different set.
+	For the tlb there is no offset(the address is the virt address) and for the caches the key entry is comp by 
+	TAG and SET that repr the real page/block number . This fields does not appear in fully associative cache models.
+	</li>
+	<li>type :  only appear in caches that have data and instruction separated.The value of this field can be I or D</li>
+	<li>VAL : This field appear only when the value stored in the cache has some importance : in this
+	case for the TLB cache where stores the real page number corresp to a virtual page number
+	</li>
+	
+	<p> The following fields appear depending of the eviction policy used:
+	<li>ni : with OPT  policy  - is the number of instruction in the current process trace when the block/page is 
+	put in the cache.In this way the algorithm can see what instruction in the trace file has the same virtual memory
+	address reference</li>
+	<li>timestamp :  the timestamp used in FIFO alg  </li>
+	<li>notUsed: used in MRU(Most Recently Used) and LRU(Least Recently Used) - a counter for the times other blocks
+	of the cache are referenced(read , write)</li>
+	<li>used: appears for LFU(Least Frequently Used) and NFU(Not Frequently Used) policy - a counter for the times this block
+	is referenced(read , write)</li>
+	<li>r :appears in  NRU(Not Recently Used) policy - is 1 if the block is read, 0 otherwise
+	 and in  NFU policy - is 1 if the block is referenced (read , write) , 0 otherwise</li>
+	 </ul>
+<p>
+
+The block that will be evicted will be :
+<ul>
+<li>for LFU policy : the entry that has tne min value for used field</li>
+<li>for LRU policy : the entry that has the max value for notUsed field</li>
+<li>for MRU policy : the entry that has the min value for notUsed field 
+( <a href="http://www.cs.cmu.edu/~ipandis/courses/18741/project_1_design_review.pdf">http://www.cs.cmu.edu/~ipandis/courses/18741/project_1_design_review.pdf</a> )
+</li>
+<li>for NFU policy : the entry that has min value for used+r</li>
+<li>for NRU policy :   
+The entries are divided in 4 classes : not read and not modified , not read and modified,
+read and not modified , read and modified.The block to evict is chosen ranmdomly from the first(defined by this order)
+class that have one or more entries.</li>
+<li>for Random policy : a random entry</li>
+<li>for FIFO policy : the entry that entered first in the cache (that has the min value for timestamp)</li>
+<li>for OPT policy : the entry that has max value for (the index of the next instruction in the trace file for this process that has the
+same virtual memory reference(counting from the current instruction index in the trace file) / TUnits(configurated for this process))
+<a href="http://en.wikipedia.org/wiki/Page_replacement_algorithms">http://en.wikipedia.org/wiki/Page_replacement_algorithms</a></li></ul>
+<p>
+The region in the cache where the alg will look in order to evict a page will be defined by
+the type of cache:
+<ul>
+<li>if it's data/instructions separated</li>
+<li>if it's set-associative :  will look only for the entries in the same set as the node that has to be put</li>
+<li>if the memory allocation policy is local : will look only for the pages of the same process</li></ul>
+</body></html>

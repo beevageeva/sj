@@ -1,0 +1,52 @@
+<project name="MyProject" default="deploy" basedir=".">
+    <description>
+        simple example build file
+    </description>
+  <!-- set global properties for this build -->
+	<property name="web"  location="web"/>
+		<!-- no tomcat anymore -->
+	<property name="binApplet"  location="binApplet"/>
+	<property name="srcApplet"  location="srcApplet"/>
+	<property name="lib"  location="libApplet"/>
+	<property name="help"  location="help"/>
+	<property name="libApplet"  location="libApplet"/>
+	<property name="jreDir"  location="/usr/lib/jvm/java-6-openjdk-i386/jre"/>
+	<property name="wwwPath"  location="/home/alex/sj/dist2/"/>
+						<!-- if help in web 
+	<property name="jhUrl"  location="http://sienai.ull.es/sj/jh.jar"/>
+						-->
+
+	   <path id="classpath">
+	        <fileset dir="${lib}" includes="**/*.jar"/>
+	        <fileset dir="${libApplet}" includes="jh.jar"/>
+	        <fileset dir="${jreDir}" includes="lib/*.jar"/>
+	    </path>
+
+  <target name="deploy" 
+        description="generate the distribution" >
+
+    <!-- COMPILE -->
+    <mkdir dir="${binApplet}"/>
+    <javac srcdir="${srcApplet}" destdir="${binApplet}" classpathref="classpath"/>
+  	<copy todir="${binApplet}" >
+    <fileset dir="${srcApplet}">
+      <exclude name="**/*.java"/>
+    </fileset>
+  	</copy>
+  	
+  	<jar jarfile="${wwwPath}/notSignedSj.jar" basedir="${binApplet}" >
+        <manifest>
+            <attribute name="Main-Class" value="view.comp.run.App"/>
+						<!-- if help in web 
+            <attribute name="Class-Path" value="${jhUrl}"/>
+						 -->
+            <attribute name="Class-Path" value="jh.jar notSignedSj.jar helpSj.jar"/>
+        </manifest>
+  	</jar>	
+  	<jar jarfile="${wwwPath}/helpSj.jar" basedir="${help}" />
+  </target>
+	
+  </project>
+
+
+

@@ -1,0 +1,23 @@
+<html><body>
+<h1>Cache</h1>
+For every event in the cache the row where this occurs is selected<br>
+Before an object is removed from the cache(for example when a page is evicted from the main memory
+and thus should not be anymore referenced in the TLB) or evicted there is a delay (of 2 sec) before it disappears from the cache<br>
+<b>colors used : </b>
+<table border = "1">
+<tr><td><img src="images/c1.jpg"></td><td>when the instruction type is FETCH or MEMREAD and ojbect is already in the cache(a read event)</td></tr>
+<tr><td><img src="images/c2.jpg"></td><td>when the instruction type is MEMWRITE and the ojbect is already in the cache(a modify event)</td></tr>
+<tr><td><img src="images/c3.jpg"></td><td>when the object is not yet in the cache(a put event).
+This event appears usually chained(from C1->C2.. ->Main Mem or Main Mem ->..C1 ).<br>
+If the referenced block is not found in C1,there will be a lookup in C2 and so on(it must be at least in the main mem
+- the last elem in the cache chain as this is done when resolving the virtual address to a real address(address translation phase))
+Then the block is brought to the first levels of cache(this always passes if the instr type is MEMREAD or FETCH and in the case
+of MEMWRITE only if the cache write miss policy is write allocate).<br>
+If the cache write hit policy is write through for every instr of type MEMWRITE or when the block is to be replaced 
+the modified block is written back in the next cache.
+</td></tr>
+<tr><td><img src="images/c4.jpg"></td><td>before an object is evicted</td></tr>
+<tr><td><img src="images/c5.jpg"></td><td>before an object is removed</td></tr>
+</table>
+</body></html>
+

@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE map
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/map_1_0.dtd">
+
+<map version="1.0">
+  <mapID target="overview" url="sjHtmlFiles/overview.html" />
+  <mapID target="cache" url="sjHtmlFiles/cache.html" />
+  <mapID target="tables" url="sjHtmlFiles/tables.html" />
+  <mapID target="config" url="sjHtmlFiles/config.html" />
+  <mapID target="trace" url="sjHtmlFiles/trace.html" />
+  <mapID target="validation" url="sjHtmlFiles/validation.html" />
+	<mapID target="procQueue" url="sjHtmlFiles/procQueue.html" />
+	<mapID target="pageTable" url="sjHtmlFiles/pageTable.html" />
+	<mapID target="pageAgingThread" url="sjHtmlFiles/pageAgingThread.html" />
+	<mapID target="memoryAllocation" url="sjHtmlFiles/memoryAllocation.html" />
+ 
+  
+</map>

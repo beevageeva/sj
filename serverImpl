@@ -1,0 +1,22 @@
+
+in u package
+Constants.host
+Constants.context
+
+<host>/<context>/sendFileNames.html?fileType=trace
+<host>/<context>/sendFileNames.html?fileType=conf
+must return a list of filenames under files/(trace|conf)
+
+from web
+<host>/<context>/images/
+
+<host>/<context>/files/trace/
+<host>/<context>/files/conf/
+
+
+implementation in java in srcServer
+
+implementation in ruby
+
+http://ramaze.net/learn/getting-started
+

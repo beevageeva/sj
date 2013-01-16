@@ -1,0 +1,44 @@
+<html><body>
+<h1>Page Table</h1>
+
+<a href="http://www.engr.umd.edu/~blj/papers/computer31-6.pdf">http://www.engr.umd.edu/~blj/papers/computer31-6.pdf</a>
+<p><b>DIRECT MAPPED</b><BR>
+The direct mapped page table is hierarchical , suppose N = number of levels.The virtual page number(in binary representation) is 
+divided in N parts . Each part has a length as defined in configuration as lengths.(note that the sum of the lengths must be equal
+to the number of bits used to represent the virtual page number).
+When searching in the page table for a virtual page number there can be 2 methods
+<p><b>bottom-up</b>
+This method only makes sense with TLB enabled (because the idea is to put in the tlb , in the case of a tlb miss also the 
+addresses of the page tables that should query from the botom most level up to the first level ),
+that is why if the tlb is not enabled the top-down method is used<BR>
+Define the virtual address of a page table:<br>
+There are N levels to wich we add level 0 that is the root page table for each process :
+So we have ROOT , L(0)(root page table for each process) , L(1) , ... L(N)<BR>
+l(1),..l(N) are the offset lenhgth for each level ; l(0) = maxNumberOfProcesses<BR>
+o(1),..o(N) are the offset values for each level ; o(0) = pid<BR>
+Define N(i) the number of page tables for each level = 0..N
+N(i)=2**(l(0)+...l(i))
+In order to define a virtual address for a page table we calculate the index of the page table in the whole array of
+page tables(supposing that they are allocated linear and considering all the tree created : an offset in a page table 
+is the index in the array of page tables in the next level referenced by all the  entries in this page table) 
+Define B(i) the number of page tables that are before this page table in level i(0..N)<BR>
+B(0) = o(0)<BR>
+B(i) = (2** l(i-1)) *  B(i-1) + o(i-1)<BR>
+Thus the virtual address of the page table in level i(for i in 0..N) is:<BR>
+1+N(0)+..N(i-1)+B(i)<BR>
+Should take care that the virtual addresses of the page tables don´t mess with the virtual addresses of the trace files
+(this virtual memory should be considered reserved)
+<p><b>top-down</b>
+
+<p><b>INVERSE MAPPED</b><BR>
+Each virtual page can be mapped to a unique physical frame because the virtual page number is hashed(%) to
+the number of pages from the memory.Thus , many virtual page numbers can be mapped to the same physical page number.
+In the page table appear all the virtual page number yet mapped to a phys page number(the one that is actually loaded in
+in the memory is marked with a 1).The hash anchor makes the collision chain shorter when searching for a
+virtual page number in the page table.<br>
+If the alocation policy is local(each process has a number of pages allocated and cannot allocate pages in 
+other process area)only one process can be at a det time in the memory.
+
+</body></html>
+
+

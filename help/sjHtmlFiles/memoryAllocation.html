@@ -1,0 +1,26 @@
+<html><body>
+<h1>Memory allocation</h1>
+In the main memory there are 2 policies  for allocating memory:
+<p><b>global</b>
+There is no previous page allocation for each process . Each process allocate a page in the main memory when needed
+even if he has to evict a page from other process.
+<p><b>local</b>
+For each process that must add , first the mem alloc check if it has free pages (must be at least a page for each region 
+in the memory . The region are specified in different ways : for example in general for a cache if it is set associative with
+n sets rhere will be n regions depending of the set number, or by data and instr separation that will define 2 regions ).
+That is the reason for in this case with an inverse mapped page table(that makes the main memory fully associative : 
+numberOfSets = numberOfEntries in the main memory)only one process can be in the memory.
+If there are free pages(they are empty and not between the pages needed by a process)these will
+be allocated to this process and marked as needed by this process.
+Then will try to get other empty entries in the main memory not needed by other processes in order 
+to achieve an equal number of pages.
+<p>PFF policy<BR>
+A thread will be run after NEvNodesToBeRun(from config)  will be evicetd from the cache.
+For each process the page  fault frequency is defined that is the number of the page evicted since the last run.
+If the page  fault frequency gets higher than maxPFF(from config) , the mem alloc searches a random
+process that has the page fault frequency lower than minPFF(from config) anf has pages not needed,
+takes a page from this process that allocates to the  first.
+
+</body></html>
+
+

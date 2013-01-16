@@ -1,0 +1,9 @@
+<html><body>
+<h1>Page aging</h1>
+The page aging is a thread run after mem ref (from config) references(read or write) were made in the main memory.
+Every page in the memory has an age that initially is 0.With every reference to it(read or write) its age is incremented 
+with ref inc units(from config) units.When the thread runs , it will remove the pages that have an age less or equal to 0
+and will decrease the age of each page (that is not empty entry)
+</body></html>
+
+

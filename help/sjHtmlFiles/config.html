@@ -1,0 +1,53 @@
+<html><body>
+<h1>Config files</h1>
+Config files are XML files with config as root element.
+<table border="1">
+<tr><th>element</th><th>attr</th><th>content descr</th></tr>
+<tr><td>config</td><td>-</td><td>virtualAddressNBits , numberProcessesNBits ,diskATU, 
+,pageTable , mainMemoryConfig , cacheConfig , cacheConfig , cacheConfig </td></tr>
+<tr><td>virtualAddressNBits</td><td> - </td><td>{the number of virt pages for each process. default :32} </td></tr>
+<tr><td>numberProcessesNBits</td><td> - </td><td>{the p2 of max number of processes. default :0} </td></tr>
+<tr><td>diskATU</td><td> - </td><td>{disk access time units. default :1} </td></tr>
+<tr><td>pageTable</td><td>direct</td><td>tlbConfig , (offsetLengths , searchMethod)||(hashAnchorSizeNBits) { If attribute direct has value true
+it will look for elements offsetLengths , searchMethod (this means that is direct mapped, set the page table as direct mapped); otherwise it will look
+for elem hashAnchorSizeNBits (sets the page table as inverse mapped)}
+</td></tr>
+<tr><td>offsetLengths</td><td>-</td><td>length ,.. length</td></tr>
+<tr><td>length</td><td>-</td><td>{the length in bits of an offset for a level.they are taken in the order they appear in the list} </td></tr>
+<tr><td>searchMethod</td><td>-</td><td>{top down or bottom up.if the string is equal to topDown set meth to top down ; otherwise to bottom up} </td></tr>
+<tr><td>hashAnchorSizeNBits</td><td>-</td><td>{p2 of the hash anchor size in the case of the inverse mapped page table} </td></tr>
+<tr><td>pageAgingConfig</td><td>-</td><td>pageAgingIncrease ,memRefToBeRun</td></tr>
+<tr><td>pageAgingIncrease</td><td>-</td><td>{the age units incresed for an entry when it's referenced}</td></tr>
+<tr><td>memRefToBeRun</td><td>-</td><td>{the number of mem references before page aging thread is run . To disable put this field -1.
+By default is disabled}</td></tr>
+<tr><td>memAllocConfig</td><td>-</td><td>minPFF , maxPFF , evNodesToRun</td></tr>
+<tr><td>minPFF</td><td>-</td><td>min PFF </td></tr>
+<tr><td>maxPFF</td><td>-</td><td>maxPFF</td></tr>
+<tr><td>evNodesToRun</td><td>-</td><td>{the number of evicted pages from the main memory before this thread is run.To have a local alocation policy and also 
+disable this thread put this in -1.Default is local}</td></tr>
+
+
+<tr><td>tlbConfig , mainMemoryConfig , cacheConfig </td><td>-</td><td> numberEntriesNBits , blockSizeNBits , evictionPolicy , busSize
+numberSetsNBits , accessTimeUnits , dataInstrSeparated
+</td></tr>
+<tr><td>numberEntriesNBits</td><td>-</td><td>{p2 of the number of entries in the cache} </td></tr>
+<tr><td>blockSizeNBits</td><td>-</td><td>{p2 of the block size of the cache} </td></tr>
+<tr><td>evictionPolicy</td><td>-</td><td>{the eviction policy.if string equals to random set random EP , if string equals to fifo set fifo EP ,
+if string equals to lru set lru EP , if string equals to lfu set lfu EP , if string equals to nru set nru EP , if string equals to nfu set nfu EP} </td></tr>
+<tr><td>busSize</td><td>-</td><td>{p2 of the number of entries in the cache.} </td></tr>
+<tr><td>accessTimeUnits</td><td>-</td><td>{access time units .default is 1} </td></tr>
+<tr><td>numberSetsNBits</td><td>-</td><td>{p2 of the number of sets in the cache(direct , fully assoc , set assoc are part cases).} </td></tr>
+<tr><td>dataInstrSeparated</td><td>-</td><td>{if value is true data and instr are sep, otherwise they aren't(only a table is created)} </td></tr>
+<tr><td>hitWritePolicy</td><td> - </td><td>{the cache hit write policy: may be write through or write back.if the 
+string is equal to writeThrough it will be set to write through , otherwise to write back.Default writeBack}
+</td></tr>
+<tr><td>missWritePolicy</td><td> - </td><td>{the cache miss write policy: may be write allocate or no write allocate.if the 
+string is equal to writeAllocate it will be set to write allocate , otherwise to no write allocate}.Default noWriteAllocate
+</td></tr>
+</table>
+All the settings  that don't appear as input fields in config panels are ignored, thus busSize is ignored for tlb , numberSetsNBits ignored for
+mainMem , dataInstrSeparated ignored for other caches than C1 and tlb, for all caches(if enabled : C1 , C2 , C3) is set the
+same block size and in the form will appear the blockSize of C1(C1 corresp to first cacheConfig element encountered, C2 to the second , C3 to the third)
+If not set in this config file , the field will take def values.
+
+</body></html>

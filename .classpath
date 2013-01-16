@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="binApplet" path="srcApplet"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" output="binServer" path="srcServer"/>
+	<classpathentry kind="lib" path="/srv/apache-tomcat-5.5.23/common/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="/local/pear/sj/libApplet/jh.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
