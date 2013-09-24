@@ -1,4 +1,4 @@
 sj
 ==
 
-memory simulator written in java (1 processor)
+memory simulator written in java(using swing) (1 processor)

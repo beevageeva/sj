@@ -202,6 +202,14 @@ public class CachesModel {
 	public String getAllCachesStats() {
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < cacheModels.length; i++) {
+			if (i<cacheModels.length-1){
+				sb.append("Cache ");
+				sb.append(i+1);
+			}
+			else{
+				sb.append("memoria principal");
+			}
+			sb.append(":\n");
 			sb.append(cacheModels[i].getCacheStat().getStatString());
 			sb.append("\n\n");
 		}
