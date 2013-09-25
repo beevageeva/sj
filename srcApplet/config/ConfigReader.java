@@ -11,11 +11,105 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
+import org.w3c.dom.Document;
+
 
 import config.DirectMappedPageTableConfig;
 import config.InverseMappedPageTableCfg;
 
 public class ConfigReader {
+
+
+
+	public static String exportXml(){
+		StringBuffer sb=new StringBuffer();
+		sb.append("<config>\n");
+		sb.append(" <virtualAddressNBits>");
+		sb.append(String.valueOf(ConfigHolder.generalCfg.getVirtualAddrNBits()));
+		sb.append("</virtualAddressNBits>\n");
+		sb.append(" <numberProcessesNBits>");
+		sb.append(String.valueOf(ConfigHolder.generalCfg.getNumberProcessesNBits()));
+		sb.append("</numberProcessesNBits>\n");
+		sb.append(" <diskATU>");
+		sb.append(String.valueOf(ConfigHolder.generalCfg.getDiskAccessTime()));
+		sb.append("</diskATU>\n");
+		//pagetable
+		sb.append(" <pageTable direct=\"");
+		 if(ConfigHolder.pageTableCfg.isDirectMapped()){
+			//direct mapped
+			sb.append("true\">\n");
+			DirectMappedPageTableConfig dptcfg = (DirectMappedPageTableConfig) ConfigHolder.pageTableCfg
+              .getAddCfg();
+			int[] ols = dptcfg.getOffsetsLength();
+			if(ols!=null && ols.length>0){
+				sb.append("  <offsetLengths>\n");
+				for(int i = 0; i<ols.length ;i++){
+					sb.append("   <length>");
+					sb.append(ols[i]);
+					sb.append("</length>\n");
+				}
+				sb.append("  </offsetLengths>\n");
+			}
+		 sb.append("  <searchMethod>");
+		 if(dptcfg.isSearchMethodTopDown()){
+				sb.append("topdown");
+		 }	
+		else{
+				sb.append("bottomup");
+	
+		}
+		
+		sb.append("</searchMethod>\n");
+		}
+		else{
+			sb.append("false\">\n");
+			sb.append("  <hashAnchorSizeNBits>");
+		 
+			InverseMappedPageTableCfg icfg = (InverseMappedPageTableCfg) ConfigHolder.pageTableCfg
+							.getAddCfg();
+			sb.append(String.valueOf(icfg.getHashAnchorSizeNBits()));
+			sb.append("</hashAnchorSizeNBits>\n");
+		}
+		
+		sb.append("  <tlbConfig>\n");
+		sb.append(getCacheConfigXML(ConfigHolder.pageTableCfg.getTlbConfig()));
+		sb.append("  </tlbConfig>\n");
+		sb.append(" </pageTable>\n");
+
+		if(ConfigHolder.generalCfg.pageAgingConfig!=null && ConfigHolder.generalCfg.pageAgingConfig.getPageAgingIncrease()!=-1){
+			sb.append(" <pageAgingConfig>\n");
+			sb.append("  <pageAgingIncrease>" + ConfigHolder.generalCfg.pageAgingConfig.getPageAgingIncrease()  +  "</pageAgingIncrease>\n");		
+			sb.append("  <memRefToRun>" + ConfigHolder.generalCfg.pageAgingConfig.getPageAgingIncrease()  +  "</memRefToRun>\n");		
+			sb.append(" </pageAgingConfig>\n");
+
+			}
+		if(ConfigHolder.generalCfg.memAllocConfig!=null && ConfigHolder.generalCfg.memAllocConfig.getMinPFF()!=-1){
+			sb.append(" <memAllocConfig>\n");
+			sb.append("  <minPFF>" + ConfigHolder.generalCfg.memAllocConfig.getMinPFF()  +  "</minPFF>\n");		
+			sb.append("  <maxPFF>" + ConfigHolder.generalCfg.memAllocConfig.getMaxPFF()  +  "</maxPFF>\n");		
+			sb.append(" </memAllocConfig>\n");
+
+			}
+			
+			
+
+
+
+
+		for(int i = 0;i<ConfigHolder.numberCaches;i++){
+			sb.append("\t<cacheConfig>\n");
+			sb.append(getCacheConfigXML(ConfigHolder.cacheCfgs[i]));
+			sb.append("\t</cacheConfig>\n");
+		}
+		sb.append("\t<mainMemoryConfig>\n");
+		sb.append(getCacheConfigXML(ConfigHolder.cacheCfgs[ConfigHolder.numberCaches]));
+		sb.append("\t</mainMemoryConfig>\n");
+		sb.append("</config>");
+		return sb.toString();
+	}
+
+
+
 
 	/**
 	 * also closes the input stream
@@ -139,6 +233,55 @@ public class ConfigReader {
 	}
 
 
+
+	private static String getCacheConfigXML(CacheConfig cacheCfg){
+		StringBuffer sb = new StringBuffer();
+		sb.append("<numberEntriesNBits>" + cacheCfg.getNumberEntriesNBits()  + "</numberEntriesNBits>\n");
+		sb.append("<blockSizeNBits>" + cacheCfg.blockSizeNBits[0]  + "</blockSizeNBits>\n");
+		if (cacheCfg.isDataInstrSeparated()){
+			sb.append("<dataInstrSeparated>true</dataInstrSeparated>\n");
+			sb.append("<blockSizeInstrNBits>" + cacheCfg.blockSizeNBits[1]  + "</blockSizeInstrNBits>\n");
+		}
+		sb.append("<evictionPolicy>");
+		short value = cacheCfg.getEvictionPolicy();
+		switch (value) {
+			case CacheConfig.RANDOM_POLICY:
+				sb.append("random");
+				break;
+			case CacheConfig.FIFO_POLICY:
+				sb.append("fifo");
+				break;
+			case CacheConfig.LFU_POLICY:
+				sb.append("lfu");
+				break;
+			case CacheConfig.LRU_POLICY:
+				sb.append("lru");
+				break;
+			case CacheConfig.NFU_POLICY:
+				sb.append("nfu");
+				break;
+			case CacheConfig.NRU_POLICY:
+				sb.append("nru");
+				break;
+			case CacheConfig.OPT_POLICY:
+				sb.append("opt");
+				break;
+			case CacheConfig.MRU_POLICY:
+				sb.append("mru");
+				break;
+		}
+		sb.append("</evictionPolicy>");
+
+		sb.append("<busSize>" + cacheCfg.getBusSize()  + "</busSize>\n");
+		sb.append("<accessTimeUnits>" + cacheCfg.getAccessTimeUnits()  + "</accessTimeUnits>\n");
+
+		sb.append("<numberSetsNBits>" + cacheCfg.getNumberSetsNBits()  + "</numberSetsNBits>\n");
+		sb.append("<hitWritePolicy>" + (cacheCfg.isWriteThroughHitPolicy() ? "writeThrough" : "writeBack")  + "</hitWritePolicy>\n");
+		sb.append("<missWritePolicy>" + (cacheCfg.isWriteAllocateMissPolicy() ? "writeAllocate" : "noWriteAllocate")  + "</missWritePolicy>\n");
+		return sb.toString();
+	}
+
+
 	private static void setCacheConfig(CacheConfig cacheCfg, Element configElem) {
 		cacheCfg.setNumberEntriesNBits(getElementIntValue(configElem,
 				"numberEntriesNBits", 0));
@@ -156,7 +299,7 @@ public class ConfigReader {
 					"blockSizeInstrNBits", 0);
 		}
 
-		value = getElementValue(configElem, "evictionPolicy" , "randomss");
+		value = getElementValue(configElem, "evictionPolicy" , "random");
 		if (value != null) {
 			if (value.equalsIgnoreCase("random")) {
 				cacheCfg.setEvictionPolicy(CacheConfig.RANDOM_POLICY);

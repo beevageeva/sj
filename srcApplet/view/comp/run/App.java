@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 import u.MainFrame;
 
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+
 
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
@@ -103,6 +106,7 @@ public class App extends JApplet implements ActionListener, ProcessListener {
 	JMenuItem loadLocalConfigItem;
 
 	JMenuItem reconfigItem;
+	JMenuItem saveconfigItem;
 
 	public BPanel bPanel;
 
@@ -410,6 +414,11 @@ public class App extends JApplet implements ActionListener, ProcessListener {
 		reconfigItem.addActionListener(this);
 		reconfigItem.setEnabled(false);
 		menu.add(reconfigItem);
+		saveconfigItem = new JMenuItem("Export config to XML");
+		saveconfigItem.setActionCommand("exportXml");
+		saveconfigItem.addActionListener(this);
+		saveconfigItem.setEnabled(false);
+		menu.add(saveconfigItem);
 
 		menu = new JMenu("Trace");
 		if(configFileName!=null){
@@ -548,6 +557,13 @@ public class App extends JApplet implements ActionListener, ProcessListener {
 			}
 		}
 
+		else if ("exportXml".equals(e.getActionCommand())) {
+			String message = ConfigReader.exportXml();
+			JTextArea ta = new JTextArea(message, 40, 50);
+		  ta.setEditable(false);
+			JOptionPane.showMessageDialog(null,new JScrollPane(ta), "Configuration XML", JOptionPane.INFORMATION_MESSAGE);
+		}
+
 		else if ("reconfig".equals(e.getActionCommand())) {
 			reconfig();
 		} else if ("help".equals(e.getActionCommand())) {
@@ -626,6 +642,7 @@ public class App extends JApplet implements ActionListener, ProcessListener {
 		viewLoadedTracesItem.setEnabled(false);
 		configuration.okButton.setEnabled(true);
 		reconfigItem.setEnabled(false);
+		saveconfigItem.setEnabled(false);
 		loadServerConfigItem.setEnabled(true);
 		loadLocalConfigItem.setEnabled(true);
 	}

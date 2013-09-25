@@ -139,6 +139,7 @@ public class Configuration extends JPanel implements ActionListener{
 			app.loadLocalConfigItem.setEnabled(false);
 			app.loadServerConfigItem.setEnabled(false);
 			app.reconfigItem.setEnabled(true);
+			app.saveconfigItem.setEnabled(true);
 		}
 	}
 	
