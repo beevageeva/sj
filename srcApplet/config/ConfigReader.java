@@ -79,7 +79,7 @@ public class ConfigReader {
 		if(ConfigHolder.generalCfg.pageAgingConfig!=null && ConfigHolder.generalCfg.pageAgingConfig.getPageAgingIncrease()!=-1){
 			sb.append(" <pageAgingConfig>\n");
 			sb.append("  <pageAgingIncrease>" + ConfigHolder.generalCfg.pageAgingConfig.getPageAgingIncrease()  +  "</pageAgingIncrease>\n");		
-			sb.append("  <memRefToRun>" + ConfigHolder.generalCfg.pageAgingConfig.getPageAgingIncrease()  +  "</memRefToRun>\n");		
+			sb.append("  <memRefToRun>" + ConfigHolder.generalCfg.pageAgingConfig.getMemRefToBeRun()  +  "</memRefToRun>\n");		
 			sb.append(" </pageAgingConfig>\n");
 
 			}
@@ -242,32 +242,35 @@ public class ConfigReader {
 			sb.append("<dataInstrSeparated>true</dataInstrSeparated>\n");
 			sb.append("<blockSizeInstrNBits>" + cacheCfg.blockSizeNBits[1]  + "</blockSizeInstrNBits>\n");
 		}
+		else{
+			sb.append("<dataInstrSeparated>false</dataInstrSeparated>\n");
+		}
 		sb.append("<evictionPolicy>");
 		short value = cacheCfg.getEvictionPolicy();
 		switch (value) {
 			case CacheConfig.RANDOM_POLICY:
-				sb.append("random");
+				sb.append("RANDOM");
 				break;
 			case CacheConfig.FIFO_POLICY:
-				sb.append("fifo");
+				sb.append("FIFO");
 				break;
 			case CacheConfig.LFU_POLICY:
-				sb.append("lfu");
+				sb.append("LFU");
 				break;
 			case CacheConfig.LRU_POLICY:
-				sb.append("lru");
+				sb.append("LRU");
 				break;
 			case CacheConfig.NFU_POLICY:
-				sb.append("nfu");
+				sb.append("NFU");
 				break;
 			case CacheConfig.NRU_POLICY:
-				sb.append("nru");
+				sb.append("NRU");
 				break;
 			case CacheConfig.OPT_POLICY:
-				sb.append("opt");
+				sb.append("OPT");
 				break;
 			case CacheConfig.MRU_POLICY:
-				sb.append("mru");
+				sb.append("MRU");
 				break;
 		}
 		sb.append("</evictionPolicy>");
