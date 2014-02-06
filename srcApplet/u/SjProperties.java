@@ -1,6 +1,7 @@
 package u;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
@@ -13,8 +14,13 @@ public class SjProperties {
 	static{
 		properties = new Properties();
 		try {
-			properties.load(new FileInputStream("sj.properties"));
+			InputStream is;
+			//won't work in a jar
+			//is = new FileInputStream("sj.properties");
+			is = SjProperties.class.getClassLoader().getResourceAsStream("sj.properties");
+			properties.load(is);
 		} catch (FileNotFoundException e) {
+			System.out.println("working directory : " + System.getProperty("user.dir"));
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();

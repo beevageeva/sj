@@ -159,7 +159,7 @@ public class MainFrame extends Frame implements
 
 	// Set up properties.
 	Properties props = System.getProperties();
-	props.put( "browser", "Acme.MainFrame" );
+	props.put( "browser", "MainFrame" );
 	props.put( "browser.version", "11jul96" );
 	props.put( "browser.vendor", "Acme Laboratories" );
 	props.put( "browser.vendor.url", "http://www.acme.com/" );

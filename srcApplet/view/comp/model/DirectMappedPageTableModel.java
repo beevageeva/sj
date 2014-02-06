@@ -61,6 +61,7 @@ public class DirectMappedPageTableModel extends PageTableModel {
 		int vpnNBits = ConfigHolder.generalCfg.getVirtualAddrNBits()
 				- ConfigHolder.cacheCfgs[ConfigHolder.numberCaches]
 						.getBlockSizeNBits(instrType);
+		//System.out.println("getOffsets: InstrType = " + String.valueOf(instrType) +", vPN = " + String.valueOf(vPN)  + ",vpnNBits=" +  String.valueOf(vpnNBits));
 		int[] offsetsLength = ((DirectMappedPageTableConfig) ConfigHolder.pageTableCfg
 				.getAddCfg()).getOffsetsLength();
 		String vpnBinary = Helper.convertDecimalToBinary(vPN, vpnNBits);
@@ -139,6 +140,12 @@ public class DirectMappedPageTableModel extends PageTableModel {
 		DirectPageDirectoryModel model;
 		DirectPageDirectoryEntry entry;
 		int[] offsets = getOffsets((int) (vPN % Math.pow(2, vpnNBits)) , instrType);
+		/*System.out.println("getPhysicalPageNumberFromPageTD instrType=" + String.valueOf(instrType) + ", offsets:");
+		for(int i = 0; i < offsets.length; i++){
+			System.out.print(String.valueOf(offsets[i]) + " ");
+		}
+		System.out.println("");
+		*/
 		int n;
 		for (int i = startLevel; i < offsetsLength.length + 1; i++) {
 			n = (i == 0 ? (int) (vPN / Math.pow(2, vpnNBits)) : offsets[i - 1]);
@@ -152,11 +159,13 @@ public class DirectMappedPageTableModel extends PageTableModel {
 				if (i == offsetsLength.length) {
 					// read first time from disk
 					lastNumber = getPageFromDisk(pid ,-1, instrType , vPN);
+					//System.out.println("getPhysicalPageNumberFromPageTD instrType=" + String.valueOf(instrType) + ", lastNumber1=" + String.valueOf(lastNumber));
 					// put the key , value in a swap file
 					((DirectPageTableModel) model)
 							.setEntry(n, lastNumber, true);
 				} else {
 					lastNumber = tables[i + 1].size();
+					//System.out.println("getPhysicalPageNumberFromPageTD instrType=" + String.valueOf(instrType) + ", lastNumber3=" + String.valueOf(lastNumber));
 					model.setEntryPageNumber(n, lastNumber);
 					createTable(i + 1);
 				}
@@ -167,11 +176,17 @@ public class DirectMappedPageTableModel extends PageTableModel {
 						// the page number is an offset of a swap file, get from
 						// there
 						lastNumber = getPageFromDisk(pid , -1 ,instrType , vPN);
+						//System.out.println("getPhysicalPageNumberFromPageTD instrType=" + String.valueOf(instrType) + ", lastNumber2=" + String.valueOf(lastNumber));
 						((DirectPageTableModel) model).setEntry(n, lastNumber,
 								true);
 					}
+					else{
+						lastNumber = entry.getPageNumber();
+						//System.out.println("getPhysicalPageNumberFromPageTD instrType=" + String.valueOf(instrType) + ", lastNumber5=" + String.valueOf(lastNumber));
+					}
 				} else {
 					lastNumber = entry.getPageNumber();
+					//System.out.println("getPhysicalPageNumberFromPageTD instrType=" + String.valueOf(instrType) + ", lastNumber4=" + String.valueOf(lastNumber));
 				}
 			}
 			if (ptVPNs != null && i>0) {

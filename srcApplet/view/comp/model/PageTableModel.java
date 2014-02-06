@@ -10,6 +10,7 @@ import view.model.ExtCacheEntry;
 import view.model.ProcQueueMg;
 import config.ConfigHolder;
 
+
 public abstract class PageTableModel implements CacheListener {
 
 	protected CacheModel mainMemoryModel;
@@ -52,6 +53,7 @@ public abstract class PageTableModel implements CacheListener {
 						app.animations.add(cpuToCache);
 					}
 				}
+				//System.out.println("INTLB: getPhysicalPageNumber pid=" + String.valueOf(pid) + ",vPN=" + String.valueOf(vPN) + ",instrType="  + String.valueOf(instrType) + ", RES="  + String.valueOf(rpn) );
 				return rpn;
 			}
 		}
@@ -68,6 +70,8 @@ public abstract class PageTableModel implements CacheListener {
 		if(tlbModel.getCfg().isEnabled()){
 			tlbModel.getCache().put(new ExtCacheEntry(pid ,vPN , instrType , res));
 		}
+		//System.out.println("getPhysicalPageNumber pid=" + String.valueOf(pid) + ",vPN=" + String.valueOf(vPN) + ",instrType="  + String.valueOf(instrType) + ", RES="  + String.valueOf(res) );
+	
 		return res;
 	}
 
