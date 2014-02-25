@@ -70,6 +70,9 @@ public class LRUCache extends Cache{
 				fireTableRowsUpdated(i , i);
 			}
 		}
+		//feb 2014: must set 0 for current entry (Lorenzo!!)
+		numberTimesNotUsed[e.getIndex()]=0;
+
 	}
 
 	public void objectPut(CacheEvent e) {
