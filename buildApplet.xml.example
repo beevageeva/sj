@@ -44,6 +44,9 @@
         </manifest>
   	</jar>	
   	<jar jarfile="${wwwPath}/helpSj.jar" basedir="${help}" />
+
+		 <copy file="${libApplet}/jh.jar" todir="${wwwPath}/"/>
+	
   </target>
 	
   </project>

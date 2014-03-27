@@ -22,7 +22,8 @@ public class FIFOCache extends Cache {
 		int indexMin=-1;
 		for (int i = region.getStartIndex(cacheEntry); i < region.getEndIndex(cacheEntry); i++) {
 			if(region.isInRegion(i , cacheEntry)){
-				if(timestamp[i]<min){
+				//TODO if(timestamp[i]<min){   //now replacing the entry with max value
+				if(timestamp[i]>min){
 					min = timestamp[i];
 					indexMin = i;
 				}
@@ -41,7 +42,7 @@ public class FIFOCache extends Cache {
 		if(col<getColumnCount()-1){
 			return super.getColumnName(col);
 		}
-		return "timestamp";
+		return "age";
 	}
 
 	@Override
@@ -56,19 +57,27 @@ public class FIFOCache extends Cache {
 	}
 
 	public void objectRead(CacheEvent e) {
+		CacheEntry entry = e.getCache().getEntry(e.getIndex());
+    for(int i = region.getStartIndex(entry) ; i<region.getEndIndex(entry);i++){
+      if(region.isInRegion(i , entry)){
+				 timestamp[i]++;
+				 fireTableRowsUpdated(i , i);	
+			}
+		}
 		
 		
 	}
 
 	public void objectIsToBeModified(CacheEvent e) {
-		
-		
+		objectRead(e);	
 	}
 
 	public void objectPut(CacheEvent e) {
 		int i = e.getIndex();
-		timestamp[i] = System.currentTimeMillis();
-		fireTableRowsUpdated(i , i);
+		//timestamp[i] = System.currentTimeMillis();
+		//replaced timestamp by an integer value which updates every time am entry is hit	
+		timestamp[i] = 0;
+		objectRead(e);
 	}
 
 	
