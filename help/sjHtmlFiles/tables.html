@@ -23,7 +23,7 @@ Cache table(this includes tlb and main memory)default fields:
 	<li>ni : with OPT  policy  - is the number of instruction in the current process trace when the block/page is 
 	put in the cache.In this way the algorithm can see what instruction in the trace file has the same virtual memory
 	address reference</li>
-	<li>timestamp :  the timestamp used in FIFO alg  </li>
+	<li>age :  the age used in FIFO alg(currentTime-timestamp), it will be a number showing the number of instructions that have been executed since the block/page is in cache/memory  </li>
 	<li>notUsed: used in MRU(Most Recently Used) and LRU(Least Recently Used) - a counter for the times other blocks
 	of the cache are referenced(read , write)</li>
 	<li>used: appears for LFU(Least Frequently Used) and NFU(Not Frequently Used) policy - a counter for the times this block
@@ -46,7 +46,7 @@ The entries are divided in 4 classes : not read and not modified , not read and 
 read and not modified , read and modified.The block to evict is chosen ranmdomly from the first(defined by this order)
 class that have one or more entries.</li>
 <li>for Random policy : a random entry</li>
-<li>for FIFO policy : the entry that entered first in the cache (that has the min value for timestamp)</li>
+<li>for FIFO policy : the entry that entered first in the cache (that has the max value for age equiv to min value for timestamp)</li>
 <li>for OPT policy : the entry that has max value for (the index of the next instruction in the trace file for this process that has the
 same virtual memory reference(counting from the current instruction index in the trace file) / TUnits(configurated for this process))
 <a href="http://en.wikipedia.org/wiki/Page_replacement_algorithms">http://en.wikipedia.org/wiki/Page_replacement_algorithms</a></li></ul>

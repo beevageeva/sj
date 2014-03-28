@@ -29,7 +29,7 @@ public class ProcessMgView extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
-	public ProcessMg processMg;
+	public ProcessMg processMg = null;
 	
 	public ProcessMgView(ProcessMg procMg){
 		super(new BorderLayout());

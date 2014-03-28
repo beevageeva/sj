@@ -626,6 +626,8 @@ public class App extends JApplet implements ActionListener, ProcessListener {
 			bPanel = null;
 
 		}
+		//reset queue defined in constructor
+		procQueueMg.reset();
 		if (processMgView != null) {
 			desktop.remove(processMgView);
 			processMgView = null;

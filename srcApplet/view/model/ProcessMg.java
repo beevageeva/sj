@@ -10,9 +10,9 @@ import view.model.ProcQueueMg.ProcessListener;
 
 public class ProcessMg {
 
-	public MainMemAllocator memAlloc;
+	public MainMemAllocator memAlloc = null;
 
-	public ProcQueueMg pQueueMg;
+	public ProcQueueMg pQueueMg = null;
 
 	public static final short TOO_MANY_TRACE_FILES = 0;
 
@@ -22,13 +22,14 @@ public class ProcessMg {
 
 	private int numberOfProcesses=0;
 	
-	private List<Integer> freePids = new ArrayList<Integer>();
+	private List<Integer> freePids = null;
 	/**
 	 * @param pqm
 	 * @param mall
 	 *            may be null if it is the global alloc policy
 	 */
 	public ProcessMg(ProcQueueMg pqm, MainMemAllocator mall) {
+		freePids = new ArrayList<Integer>();
 		this.pQueueMg = pqm;
 		this.memAlloc = mall;
 	}

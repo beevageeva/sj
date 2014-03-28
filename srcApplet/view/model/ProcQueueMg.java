@@ -17,11 +17,11 @@ public class ProcQueueMg extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 
-	private Map<Integer, Proc> proc = new HashMap<Integer, Proc>();
+	private Map<Integer, Proc> proc = null;
 
-	private List<ProcInterruptedContext> waitingProc = new ArrayList<ProcInterruptedContext>();
+	private List<ProcInterruptedContext> waitingProc = null;
 
-	private List<ProcContext> toExecProc = new ArrayList<ProcContext>();
+	private List<ProcContext> toExecProc = null;
 
 	private short type;
 
@@ -37,7 +37,16 @@ public class ProcQueueMg extends AbstractTableModel {
 
 	public Object lock = new Object();
 
-	private static List<ProcessListener> procListeners = new ArrayList<ProcessListener>();
+	private static List<ProcessListener> procListeners = null;
+
+	//initialize here the hasmaps and arrays : TODO
+	public ProcQueueMg(){
+		proc = new HashMap<Integer, Proc>();
+		waitingProc = new ArrayList<ProcInterruptedContext>();
+		toExecProc = new ArrayList<ProcContext>();
+		procListeners = new ArrayList<ProcessListener>();
+	}
+
 
 	public short getType() {
 		return type;
@@ -47,6 +56,13 @@ public class ProcQueueMg extends AbstractTableModel {
 		return pid;
 	}
 
+
+	public void reset(){
+		proc.clear();
+		waitingProc.clear();
+		toExecProc.clear();
+		procListeners.clear();
+	}
 
 	public synchronized void addProc(int pid, InstrReader instrReader,
 			int tUnits) {
