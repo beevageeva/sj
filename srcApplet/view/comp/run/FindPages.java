@@ -62,10 +62,12 @@ public class FindPages extends JPanel implements ActionListener  , ChangeListene
 		playButton = new JButton("play");
 		playButton.setActionCommand("play");
 		playButton.addActionListener(this);
+		playButton.setEnabled(true);
 		buttonPanel.add(playButton);
 		step1Button = new JButton("step");
 		step1Button.setActionCommand("step1");
 		step1Button.addActionListener(this);
+		step1Button.setEnabled(true);
 		buttonPanel.add(step1Button);
 		InfoButton infoButton = new InfoButton(this , ConfigHolder.generalCfg.getStringInfo());
 		buttonPanel.add(infoButton);

@@ -613,6 +613,7 @@ public class App extends JApplet implements ActionListener, ProcessListener {
 	}
 
 	public void reconfig() {
+		//start - similar to reconfig
 		if (findPages != null) {
 			desktop.remove(findPages);
 			findPages = null;
@@ -637,6 +638,8 @@ public class App extends JApplet implements ActionListener, ProcessListener {
 			thrView = null;
 
 		}
+		//end
+		//start panels	
 		configuration.setPanelsEnabled(true);
 		repaint();
 		loadLocalTraceItem.setEnabled(false);

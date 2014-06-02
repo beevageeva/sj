@@ -10,7 +10,7 @@
 	<property name="lib"  location="libApplet"/>
 	<property name="help"  location="help"/>
 	<property name="libApplet"  location="libApplet"/>
-	<property name="jreDir"  location="/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.60-2.4.5.0.fc19.x86_64"/>
+	<property name="jreDir"  location="/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.60-2.4.7.0.fc19.x86_64/"/>
 	<!-- property name="wwwPath"  location="/scratch1/sj-dist/"/ -->
 	<property name="wwwPath"  location="dist"/>
 						<!-- if help in web 
